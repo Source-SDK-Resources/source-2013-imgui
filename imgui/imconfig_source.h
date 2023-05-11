@@ -35,7 +35,7 @@ IMGUI_API uint64		ImFileWrite( const void *data, uint64 size, uint64 count, ImFi
 
 // Source's colors are stored as BGRA. Setting this allows us to avoid per vertex swizzles in mesh builder.
 // On Linux and Mac, mesh builder already does these swizzles regardless
-#ifndef LINUX
+#if !defined( OPENGL_COLOR_SWAP )
 #define IMGUI_USE_BGRA_PACKED_COLOR
 #endif
 

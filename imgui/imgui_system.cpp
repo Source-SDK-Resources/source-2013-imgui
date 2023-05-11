@@ -99,6 +99,7 @@ public:
 	IImguiWindow *FindWindow( const char *szName ) override;
 	void UnregisterWindowFactories( IImguiWindow **ppWindows, int nCount ) override;
 	void GetAllWindows( CUtlVector<IImguiWindow *> &windows ) override;
+	void SetWindowVisible( IImguiWindow* pWindow, bool bVisible, bool bEnableInput ) override;
 
 	bool DrawWindow( IImguiWindow *pWindow );
 
@@ -306,11 +307,15 @@ void CDearImGuiSystem::Render()
 		ImGui::ShowMetricsWindow( &m_bDrawMetrics );
 
 	// Draw everything else
+	bool bDrawn = false;
 	FOR_EACH_DICT( m_ImGuiWindows, i )
 	{
 		auto *pWindow = m_ImGuiWindows[i];
 		if ( pWindow->ShouldDraw() )
+		{
 			DrawWindow( pWindow );
+			bDrawn = true;
+		}
 	}
 
 	ImGui::Render();
@@ -324,6 +329,12 @@ void CDearImGuiSystem::Render()
 	m_flLastFrameTime = curtime;
 
 	io.DeltaTime = static_cast<float>( dt );
+	
+	// Deactivate our overlay if nothing is being drawn anymore
+	if ( !bDrawn && !m_bDrawDemo && !m_bDrawMetrics && !m_bDrawMenuBar )
+	{
+		PopInputContext();
+	}
 }
 
 //---------------------------------------------------------------------------------------//
@@ -381,6 +392,19 @@ void CDearImGuiSystem::GetAllWindows( CUtlVector<IImguiWindow *> &windows )
 	windows.Purge();
 	FOR_EACH_DICT( m_ImGuiWindows, i )
 		windows.AddToTail( m_ImGuiWindows[i] );
+}
+
+//---------------------------------------------------------------------------------------//
+// Purpose: Make a window visible
+//---------------------------------------------------------------------------------------//
+void CDearImGuiSystem::SetWindowVisible( IImguiWindow* pWindow, bool bVisible, bool bEnableInput )
+{
+	Assert( pWindow );
+	pWindow->SetDraw( bVisible );
+	if ( bVisible && bEnableInput )
+		PushInputContext();
+	else if ( !bVisible && bEnableInput )
+		PopInputContext();
 }
 
 //---------------------------------------------------------------------------------------//
