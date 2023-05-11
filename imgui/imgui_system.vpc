@@ -1,11 +1,12 @@
 
-$Macro SRCDIR           "..\..\.."
+$Macro IMGUI_DIR "$SRCDIR\imgui"
 
 $Configuration
 {
 	$Compiler
 	{
-		$PreprocessorDefinitions	"$BASE;IMGUI_DISABLE_INCLUDE_IMCONFIG_H;IMGUI_USER_CONFIG=$SRCDIR/game/client/imgui/imconfig_source.h"
+		$PreprocessorDefinitions	"$BASE;IMGUI_DISABLE_INCLUDE_IMCONFIG_H;IMGUI_USER_CONFIG=\$QUOTEimgui/imconfig_source.h\$QUOTE"
+		$AdditionalIncludeDirectories	"$BASE;$IMGUI_DIR;$IMGUI_DIR/thirdparty"
 	}
 }
 
@@ -13,30 +14,34 @@ $Project
 {
 	$Folder "Source Files"
 	{
-		$File "imgui_impl_source.cpp"
-		$File "imgui_system.cpp"
+		$File "$IMGUI_DIR/imgui/imgui_impl_source.cpp"
+		$File "$IMGUI_DIR/imgui/imgui_system.cpp"
 		
 		$Folder "ImGUI"
 		{
-			$File "$SRCDIR/thirdparty/imgui/imgui.cpp" \
-					"$SRCDIR/thirdparty/imgui/imgui_demo.cpp" \
-					"$SRCDIR/thirdparty/imgui/imgui_draw.cpp" \
-					"$SRCDIR/thirdparty/imgui/imgui_tables.cpp" \
-					"$SRCDIR/thirdparty/imgui/imgui_widgets.cpp"
+			$File "$IMGUI_DIR/thirdparty/imgui/imgui.cpp" \
+					"$IMGUI_DIR/thirdparty/imgui/imgui_demo.cpp" \
+					"$IMGUI_DIR/thirdparty/imgui/imgui_draw.cpp" \
+					"$IMGUI_DIR/thirdparty/imgui/imgui_tables.cpp" \
+					"$IMGUI_DIR/thirdparty/imgui/imgui_widgets.cpp"
 			{
-				$Compiler
+				$Configuration
 				{
-					$Create/UsePrecompiledHeader    "Not Using Precompiled Headers"
+					$Compiler
+					{
+						$Create/UsePrecompiledHeader    "Not Using Precompiled Headers"
+					}
 				}
 			}
 		}
 	}
-	
+
 	$Folder "Header Files"
 	{
-		$File "imconfig_source.h"
-		$File "imgui_impl_source.h"
-		$File "imgui_system.h"
-		$File "imgui_window.h"
+		$File "$IMGUI_DIR/imgui/imconfig_source.h"
+		$File "$IMGUI_DIR/imgui/imgui_impl_source.h"
+		$File "$IMGUI_DIR/imgui/imgui_system.h"
+		$File "$IMGUI_DIR/imgui/imgui_window.h"
 	}
 }
+
