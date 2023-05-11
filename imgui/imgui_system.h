@@ -54,6 +54,8 @@ public:
 	virtual IImguiWindow *FindWindow( const char *szName ) = 0;
 
 	virtual void GetAllWindows( CUtlVector<IImguiWindow *> & windows ) = 0;
+	
+	virtual void SetWindowVisible( IImguiWindow* pWindow, bool bVisible, bool bEnableInput = true ) = 0;
 };
 
 extern IImguiSystem *g_pImguiSystem;
