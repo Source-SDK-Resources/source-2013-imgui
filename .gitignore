@@ -5,3 +5,7 @@
 *.lib
 *.exe
 build/
+
+.ccls-cache
+.clangd/
+
