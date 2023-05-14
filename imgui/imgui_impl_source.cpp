@@ -74,10 +74,10 @@ void ImGui_ImplSource_SetupRenderState( IMatRenderContext *ctx, ImDrawData *draw
 	ctx->LoadIdentity();
 	ctx->Scale( 1, -1, 1 );
 
-	float L = draw_data->DisplayPos.x;
-	float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
-	float T = draw_data->DisplayPos.y;
-	float B = draw_data->DisplayPos.y + draw_data->DisplaySize.y;
+	float L = draw_data->DisplayPos.x + 0.5f;
+	float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x + 0.5f;
+	float T = draw_data->DisplayPos.y + 0.5f;
+	float B = draw_data->DisplayPos.y + draw_data->DisplaySize.y + 0.5f;
 	ctx->Ortho( L, T, R, B, 0.f, 1.f );
 
 	ctx->MatrixMode( MATERIAL_VIEW );
