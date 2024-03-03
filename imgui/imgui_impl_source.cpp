@@ -205,6 +205,7 @@ static bool ImGui_ImplSource_CreateFontsTexture()
 	// Create a material for the texture
 	ITexture *fonttex = g_pMaterialSystem->CreateProceduralTexture( "imgui_font", TEXTURE_GROUP_OTHER, width, height, IMAGE_FORMAT_RGBA8888, TEXTUREFLAGS_NOMIP | TEXTUREFLAGS_POINTSAMPLE | TEXTUREFLAGS_PROCEDURAL | TEXTUREFLAGS_SINGLECOPY | TEXTUREFLAGS_NOLOD );
 	fonttex->SetTextureRegenerator( new CDearImGuiFontTextureRegenerator );
+	fonttex->Download();
 
 	KeyValues *vmt = new KeyValues( "UnlitGeneric" );
 	vmt->SetString( "$basetexture", "imgui_font" );
