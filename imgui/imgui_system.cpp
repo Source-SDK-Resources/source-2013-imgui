@@ -188,18 +188,17 @@ public:
 			io.AddInputCharacter( code );
 	}
 	
+	// always pass keycodes to imgui, WantCaptureKeyboard should NOT affect whether or not we do this
 	void OnKeyCodePressed( vgui::KeyCode code ) override
 	{
 		auto& io = ImGui::GetIO();
-		if ( io.WantCaptureKeyboard )
-			io.AddKeyEvent( IMGUI_KEY_TABLE[code], true );
+		io.AddKeyEvent( IMGUI_KEY_TABLE[code], true );
 	}
 	
 	void OnKeyCodeReleased( vgui::KeyCode code ) override
 	{
 		auto& io = ImGui::GetIO();
-		if ( io.WantCaptureKeyboard )
-			io.AddKeyEvent( IMGUI_KEY_TABLE[code], false );
+		io.AddKeyEvent( IMGUI_KEY_TABLE[code], false );
 	}
 	
 	void Paint() override
