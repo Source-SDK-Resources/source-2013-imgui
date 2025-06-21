@@ -163,26 +163,36 @@ bool ImGui_ImplSource_Init()
 {
 	// Setup backend capabilities flags
 	ImGuiIO &io = ImGui::GetIO();
+	ImGuiPlatformIO &platform_io = ImGui::GetPlatformIO();
+
 	io.BackendPlatformName = "source";
 	io.BackendRendererName = "imgui_impl_source";
 	io.BackendFlags = ImGuiBackendFlags_None;
-	io.SetClipboardTextFn = []( void *, const char *c )
+	
+	platform_io.Platform_SetClipboardTextFn = []( ImGuiContext *ctx, const char *text )
 	{
-		vgui::system()->SetClipboardText( c, V_strlen( c ) );
+		vgui::system()->SetClipboardText( text, V_strlen( text ) );
 	};
-	io.GetClipboardTextFn = []( void *ctx ) -> const char *
+
+	platform_io.Platform_GetClipboardTextFn = []( ImGuiContext *ctx ) -> const char *
 	{
 		auto &g = *static_cast<ImGuiContext *>( ctx );
 		g.ClipboardHandlerData.clear();
+
 		auto len = vgui::system()->GetClipboardTextCount();
+
 		if ( !len )
 			return nullptr;
+
 		g.ClipboardHandlerData.resize( len );
+
 		vgui::system()->GetClipboardText( 0, g.ClipboardHandlerData.Data, g.ClipboardHandlerData.Size );
+
 		return g.ClipboardHandlerData.Data;
 	};
 
 	ImGui_ImplSource_CreateDeviceObjects();
+	
 	return true;
 }
 
